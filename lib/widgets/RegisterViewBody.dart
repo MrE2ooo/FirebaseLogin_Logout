@@ -2,24 +2,26 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firelogin/widgets/ErrorDialog.dart';
 import 'package:flutter/material.dart';
 
-class SignInViewBody extends StatefulWidget {
-  const SignInViewBody({super.key,required this.onTap  });
+class RegisterViewBody extends StatefulWidget {
+  const RegisterViewBody({super.key,required this.onTap  });
 
   final void Function()? onTap;
 
   @override
-  State<SignInViewBody> createState() => _SignInViewBodyState();
+  State<RegisterViewBody> createState() => _SignInViewBodyState();
 }
 
-class _SignInViewBodyState extends State<SignInViewBody> {
+class _SignInViewBodyState extends State<RegisterViewBody> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
+    final TextEditingController confirmpasswordController = TextEditingController();
+    
 
-    void signUserIn(BuildContext context) async {
+    void signUserUp(BuildContext context) async {
   // Show loading circle
   showDialog(
     context: context,
@@ -31,11 +33,22 @@ class _SignInViewBodyState extends State<SignInViewBody> {
   );
 
   try {
-    UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+    // confirm password
+    if (passwordController.text == confirmpasswordController.text){
+      UserCredential userCredential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: emailController.text,
       password: passwordController.text,
     );
+    }else{
+      // show error 
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const ErrorDialog(message:  "passwords do not match");
+        },
+      );
+    }
 
     // Close the loading dialog if still mounted
     if (context.mounted) {
@@ -67,9 +80,8 @@ class _SignInViewBodyState extends State<SignInViewBody> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 64.0),
               const Text(
-                'Sign In Account',
+                'Register an acount',
                 style: TextStyle(
                   fontSize: 30, // Adjust the font size as needed
                   fontWeight: FontWeight.bold,
@@ -101,9 +113,22 @@ class _SignInViewBodyState extends State<SignInViewBody> {
                 ),
               ),
               const SizedBox(height: 16.0),
+              SizedBox(
+                width: screenWidth * 0.8,
+                height: 100,
+                child: TextField(
+                  controller: confirmpasswordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Confirm Password',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () {
-                  signUserIn(context);
+                  signUserUp(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue, // Background color
@@ -111,17 +136,17 @@ class _SignInViewBodyState extends State<SignInViewBody> {
                       horizontal: 32.0, vertical: 16.0),
                 ),
                 child:
-                    const Text('Sign In', style: TextStyle(color: Colors.white)),
+                    const Text('Sign Up', style: TextStyle(color: Colors.white)),
               ),
               const SizedBox(height: 16.0),
                Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Not a member?",style: TextStyle(color: Colors.grey[700]),),
+                  Text("Alredy Have an account?",style: TextStyle(color: Colors.grey[700]),),
                   const SizedBox(width: 4,),
                   GestureDetector(
                     onTap: widget.onTap,
-                    child: const Text('Register now',style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),)),
+                    child: const Text('Login now',style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),)),
                   
                 ],
               ),
