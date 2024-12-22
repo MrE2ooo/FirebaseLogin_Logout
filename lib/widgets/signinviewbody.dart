@@ -17,33 +17,46 @@ class _SignInViewBodyState extends State<SignInViewBody> {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
-    void signUserUp() async {
-      // show loading circle
+    void signUserIn(BuildContext context) async {
+  // Show loading circle
+  showDialog(
+    context: context,
+    builder: (context) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    },
+  );
+
+  try {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text,
+    );
+
+    // Close the loading dialog if still mounted
+    if (context.mounted) {
+      Navigator.pop(context); // Close the loading dialog
+    }
+  } on FirebaseAuthException catch (e) {
+    print(e);
+
+    // Close the loading dialog if still mounted
+    if (context.mounted) {
+      Navigator.pop(context); // Close the loading dialog
+      // Show error dialog with the error message
       showDialog(
         context: context,
         builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return ErrorDialog(message: e.message ?? "An unknown error occurred.");
         },
       );
-
-      // sign in impl
-      try {
-        UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
-        );
-      } on FirebaseAuthException catch (e) {
-        print(e);
-        
-      }
-
-      //pop the circle
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context);
     }
+  }
+}
+
+
 
     return Scaffold(
       body: Padding(
@@ -86,7 +99,7 @@ class _SignInViewBodyState extends State<SignInViewBody> {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                signUserUp();
+                signUserIn(context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue, // Background color

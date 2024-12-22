@@ -10,7 +10,7 @@ class ErrorDialog extends StatelessWidget {
     return AlertDialog(
       title: const Text('Error'),
       content: Text(message),
-      actions: <Widget>[
+      actions: [
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(); // Close the dialog
