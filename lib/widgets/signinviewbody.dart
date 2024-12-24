@@ -1,4 +1,6 @@
+import 'package:awesome_icons/awesome_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firelogin/core/widgets/CustomButtonWithIcon2.dart';
 import 'package:firelogin/widgets/ErrorDialog.dart';
 import 'package:flutter/material.dart';
 
@@ -125,6 +127,24 @@ class _SignInViewBodyState extends State<SignInViewBody> {
                   
                 ],
               ),
+              const SizedBox(height: 16.0),
+              
+        const Row(
+          children: [
+            Flexible(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32),
+                child: CustomButtonWithIcon2(
+                  color: Colors.blue,
+                  iconData: FontAwesomeIcons.google,
+                  text: 'Log in with ',
+                ),
+              ),
+            ),
+            
+          ],
+        ),
+        
             ],
           ),
         ),

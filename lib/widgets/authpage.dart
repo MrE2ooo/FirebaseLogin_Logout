@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firelogin/HomePage.dart';
 import 'package:firelogin/views/LoginOrRegisterView.dart';
-import 'package:firelogin/views/signin_view.dart';
 import 'package:flutter/material.dart';
 
 

@@ -1,5 +1,6 @@
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firelogin/core/utils/sizeconfig.dart';
 import 'package:firelogin/firebase_options.dart';
 import 'package:firelogin/widgets/authpage.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize SizeConfig here
+    SizeConfig().init(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'FireLogin',

@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  awesome_icons: ^1.1.0
   cupertino_icons: ^1.0.8
   firebase_auth: 4.20.0
   firebase_core: ^2.32.0
